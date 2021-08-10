@@ -8,6 +8,6 @@ public class HelloController {
 
     @GetMapping("/")
     public void main(){
-
+        System.out.println("진성이 바보~,~");
     }
 }
