@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.5.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
 group = 'com.green'
@@ -26,8 +27,25 @@ dependencies {
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation group: 'com.querydsl', name: 'querydsl-jpa', version: '4.4.0'
 }
 
 test {
     useJUnitPlatform()
+}
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+sourceSets{
+    main.java.srcDir querydslDir
+}
+configurations{
+    querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl{
+    options.annotationProcessorPath = configurations.querydsl
 }
